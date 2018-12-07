@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/bootstrap/bootstrap.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17-beta.0/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+
+  <title></title>
+</head>
+<body>
+  <div id="main">
+      <!-- <div class="navbar-header">
+          <a class="navbar-brand navbar-brand-tm" href="#">
+              <img alt="Brand" src="./img/logo-navbar.png">
+          </a>
+      </div> -->
+      <br>
+
+      <div class="title form-group" >
+        <p> 名单管理 </p>
+      </div>
+
+      <div class="form-group activity">
+        <label >选择活动： </label> 
+              <select v-model="query.act">
+                  <option v-for="item in activities" :value="item.id" :key="item.id">{{item.name}}</option>
+              </select>
+      </div>
+     
+      <div class="form-group upload" >
+         <label > 文件上传： </label>
+        <input type="file" id="fileUrl" accept="text/plain" name='filename' >
+      </div>
+
+      <div class="btnClass">
+        <button type="button" @click="checkForm" class="btn btn-primary" style="margin-right:40px">提交</button>
+        <button class="btn btn-primary" @click="clickDownload" :disabled="!candownload">呼叫结果导出</button>
+      </div>
+    </div>
+</body>
+</html>
+<script src="./app.js"></script>
