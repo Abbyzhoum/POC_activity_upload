@@ -6,9 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="./css/main.css">
   <link rel="stylesheet" href="./css/bootstrap/bootstrap.css">
+  <link rel="stylesheet" href="./css/laydate/theme/default/laydate.css" media="all">
+  <script src="./css/laydate/laydate.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17-beta.0/vue.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
   <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
 
   <title></title>
 </head>
@@ -37,9 +40,15 @@
         <input type="file" id="fileUrl" accept="text/plain" name='filename' >
       </div>
 
+      <div class="form-group timeRange"  >
+        <label > 日期选择： </label>
+        <input type="text" class="layui-input" id="get_laydate" v-model="query.time">
+     </div>
+
       <div class="btnClass">
         <button type="button" @click="checkForm" class="btn btn-primary" style="margin-right:40px">提交</button>
-        <button class="btn btn-primary" @click="clickDownload" :disabled="!candownload">呼叫结果导出</button>
+        <button class="btn btn-primary" @click="clickDownload" >呼叫结果导出</button>
+        <a id="a-link-for-download" target="_blank"></a>
       </div>
     </div>
 </body>

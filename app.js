@@ -3,10 +3,11 @@
     el: '#main',
     data: {
       query: {
-        act: ''
+        act: '',
+        time: ''
       },
-      activities: [],
-      candownload: false
+      time:'',
+      activities: []
     },
     methods: {
       getActivities: function () {
@@ -48,17 +49,62 @@
         xhr.send(formData)
 
         xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4 && xhr.status === 204) {
-              console.log(xhr)
+          if (xhr.readyState === 4) {
+            if(xhr.status === 200){
               alert('上传名单成功！')
             } else {
-             console.log(xhr)
+              alert('上传名单失败！')
             }
+          }
         }
-        this.toggleLoading($('#main'))
+        this.toggleLoading($('#main'))  
       },
-      clickDownload: function () {
+      initDatetime: function () {
+        var that = this
+        laydate.render({
+          elem: '#get_laydate',
+          type: 'date',
+          range: false,
+          done: function (value, date, endDate) {
+            that.query.time = value
+          }
+        })
+      },
+      clickDownload: function (e) {
+        if(this.query.act === ''){
+          alert('活动是必选项，不能为空！')
+          return 
+        } else if(this.query.time === ''){
+          alert('请先选择时间，再导出呼叫结果！')
+          return 
+        }
+
+        this.time = this.query.time.split('-').join('')
+        this.toggleLoading($('#main'))
+        var path = 'http://192.168.2.53:8082/rosters/download?activityId='+ this.query.act + '&date=' + this.time
+
+        var that = this
+        var $a = document.getElementById('a-link-for-download')
+        var xhr = new XMLHttpRequest()
+        xhr.open('get', path)
+        // xhr.setRequestHeader('Content-Type', 'application/octet-stream')
+        // xhr.setRequestHeader('Content-Disposition','form-data; name="attachment"; filename="callresult2CSM.'+ this.time + '.000000.0000.dat"')
         
+        xhr.send(null)
+        xhr.responseType = 'blob'
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            if(xhr.status === 200){
+              $a.href = window.URL.createObjectURL(xhr.response)
+              $a.download = 'callresult2CSM.'+ that.time + '.000000.0000.dat'
+              $a.click()
+            } else {
+              console.log(xhr)
+              alert('导出失败，请重新尝试！')
+          }
+        }
+      }
+        this.toggleLoading($('#main'))
       },
       toggleLoading: function ($element) {
         if ($element.hasClass('csspinner')) {
@@ -70,6 +116,9 @@
     },
     created: function () {
       this.getActivities()
+    },
+    mounted: function () {
+      this.initDatetime()
     }
   })
 })(jQuery)

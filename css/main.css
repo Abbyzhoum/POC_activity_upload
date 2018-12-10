@@ -75,6 +75,15 @@
   text-align: center;
 }
 select{
-  width: 25%;
+  width: 20%;
   height: 40px;
+}
+.timeRange{
+  margin-top: 60px;
+  text-align: center; 
+  font-size: 15px;
+}
+.timeRange input{
+  width: 20%; 
+  padding: 8px 14px;
 }
