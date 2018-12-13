@@ -57,7 +57,7 @@
   font-size: 15px;
 }
 .upload{
-  margin-top: 40px;
+  margin-top: 20px;
   /* margin-right: 25%; */
   text-align: center;
   font-size: 15px;
@@ -86,4 +86,7 @@ select{
 .timeRange input{
   width: 20%; 
   padding: 8px 14px;
+}
+#checkboxStyle{
+
 }

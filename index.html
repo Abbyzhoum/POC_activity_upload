@@ -17,39 +17,86 @@
 </head>
 <body>
   <div id="main">
-      <!-- <div class="navbar-header">
-          <a class="navbar-brand navbar-brand-tm" href="#">
-              <img alt="Brand" src="./img/logo-navbar.png">
-          </a>
-      </div> -->
-      <br>
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="title form-group" >
+                <p> 名单管理 </p>
+              </div>
 
-      <div class="title form-group" >
-        <p> 名单管理 </p>
-      </div>
+              <div class="form-group activity">
+                  <label >选择活动： </label> 
+                        <select v-model="query.act" style="width:35%;">
+                            <option v-for="item in activities" :value="item.id" :key="item.id">{{item.name}}</option>
+                        </select>
+                </div>
+                
+                <div class="form-group" style="text-align: center;">
+                    <label for="hobby" id="checkboxStyle" @change="getValue">
+                        <input type="checkbox" name="hobby" value="m0" />m0
+                        <input type="checkbox" name="hobby" value="h0" />h0
+                        <input type="checkbox" name="hobby" value="b0" />b0
+                        <input type="checkbox" name="hobby" value="b1" />b1
+                        <input type="checkbox" name="hobby" value="b2" />b2
+                        <input type="checkbox" name="hobby" value="m2" />m2
+                       </br></br>
+                       <span>{{checkValue}}</span>
+                        <!-- <input type="text" :value="checkValue"  style="width:100%;" readonly/> -->
+                      </label>
+                </div>
 
-      <div class="form-group activity">
-        <label >选择活动： </label> 
-              <select v-model="query.act">
-                  <option v-for="item in activities" :value="item.id" :key="item.id">{{item.name}}</option>
-              </select>
-      </div>
+                <div class="form-group upload" >
+                    <label > 文件上传： </label>
+                   <input type="file" id="fileUrl" accept="text/plain" name='filename' style="width:35%;">
+                 </div>
+
+
+                 <div class="btnClass">
+                    <button type="button" @click="checkForm" class="btn btn-primary" style="margin-right:40px">提交</button>
+                    <!-- <button class="btn btn-primary" @click="clickDownload" >呼叫结果导出</button>
+                    <a id="a-link-for-download" target="_blank"></a> -->
+                  </div>
+              
+        </div>
+
+        <div class="col-xs-6">
+            <div class="title form-group" >
+                <p> 结果导出 </p>
+              </div>
+
+              <div class="form-group activity">
+                  <label >选择活动： </label> 
+                        <select v-model="query.act" style="width:35%;">
+                            <option v-for="item in activities" :value="item.id" :key="item.id">{{item.name}}</option>
+                        </select>
+                </div>
+
+                <div class="form-group timeRange"  >
+                    <label > 日期选择： </label>
+                    <input type="text" class="layui-input" id="get_laydate" v-model="query.time" style="width:35%;">
+                 </div>
+
+                 <div class="btnClass">
+                    <!-- <button type="button" @click="checkForm" class="btn btn-primary" style="margin-right:40px">提交</button> -->
+                    <button class="btn btn-primary" @click="clickDownload" >呼叫结果导出</button>
+                    <a id="a-link-for-download" target="_blank"></a>
+                  </div>
+
+        </div>
+    </div>
+
+
+
+
+
+      
+
      
-      <div class="form-group upload" >
-         <label > 文件上传： </label>
-        <input type="file" id="fileUrl" accept="text/plain" name='filename' >
-      </div>
+     
+  
 
-      <div class="form-group timeRange"  >
-        <label > 日期选择： </label>
-        <input type="text" class="layui-input" id="get_laydate" v-model="query.time">
-     </div>
+      
 
-      <div class="btnClass">
-        <button type="button" @click="checkForm" class="btn btn-primary" style="margin-right:40px">提交</button>
-        <button class="btn btn-primary" @click="clickDownload" >呼叫结果导出</button>
-        <a id="a-link-for-download" target="_blank"></a>
-      </div>
+     
     </div>
 </body>
 </html>

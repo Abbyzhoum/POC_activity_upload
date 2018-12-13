@@ -7,7 +7,9 @@
         time: ''
       },
       time:'',
-      activities: []
+      activities: [],
+      checkValue: '',
+      policies: ''
     },
     methods: {
       getActivities: function () {
@@ -36,9 +38,18 @@
         } else if (!$('#fileUrl').val()){
           alert('请选择一个名单文件！')
           return
+        } 
+
+        if(this.checkValue === ''){
+          this.policies = 'm0,h0,b0,b1,m1,b2,m2'
+        } else {
+          this.policies = this.checkValue
         }
 
-        var url = 'http://192.168.2.53:8082/upload?activityId=' + this.query.act
+        console.log(this.policies)
+
+
+        var url = 'http://192.168.2.53:8082/upload?activityId=' + this.query.act + '&policies=' + this.policies
         this.toggleLoading($('#main'))
 
         var formData = new FormData()
@@ -112,7 +123,21 @@
         } else {
           $element.addClass('csspinner line back-and-forth grow')
         }
-      }
+      },
+      getValue: function (e) {
+         var hobbies = document.getElementsByName("hobby")
+         var value
+         for (i=0; i<hobbies.length; i++){
+         	if (hobbies[i].checked){
+         		if (!value){
+         			value = hobbies[i].value
+         		} else {
+         			value += "," + hobbies[i].value
+         		}
+         	}
+         }
+         this.checkValue = value
+       }
     },
     created: function () {
       this.getActivities()
