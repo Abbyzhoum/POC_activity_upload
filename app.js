@@ -9,7 +9,8 @@
       time:'',
       activities: [],
       checkValue: '',
-      policies: ''
+      policies: '',
+      selectList:[]
     },
     methods: {
       getActivities: function () {
@@ -32,22 +33,21 @@
         
       },
       checkForm: function () {
-        if(this.query.act === ''){
-          alert('活动是必选项，不能为空！')
-          return 
-        } else if (!$('#fileUrl').val()){
-          alert('请选择一个名单文件！')
-          return
-        } 
+        // if(this.query.act === ''){
+        //   alert('活动是必选项，不能为空！')
+        //   return 
+        // } else if (!$('#fileUrl').val()){
+        //   alert('请选择一个名单文件！')
+        //   return
+        // } 
 
-        if(this.checkValue === ''){
+        if(this.selectList.length === 0){
           this.policies = 'm0,h0,b0,b1,m1,b2,m2'
         } else {
           this.policies = this.checkValue
         }
 
         console.log(this.policies)
-
 
         var url = 'http://192.168.2.53:8082/upload?activityId=' + this.query.act + '&policies=' + this.policies
         this.toggleLoading($('#main'))
@@ -125,18 +125,20 @@
         }
       },
       getValue: function (e) {
-         var hobbies = document.getElementsByName("hobby")
+         var hobbies = e.target
          var value
-         for (i=0; i<hobbies.length; i++){
-         	if (hobbies[i].checked){
-         		if (!value){
-         			value = hobbies[i].value
-         		} else {
-         			value += "," + hobbies[i].value
-         		}
-         	}
-         }
-         this.checkValue = value
+
+        if(hobbies.checked){
+          this.selectList.push(hobbies.value)
+        }else{
+          var index = this.selectList.findIndex(function(item){
+            return item === hobbies.value
+          })
+          this.selectList.splice(index,1)
+        }
+        this.checkValue =  this.selectList.join()
+        console.log(this.selectList)
+
        }
     },
     created: function () {
