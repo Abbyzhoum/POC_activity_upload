@@ -33,14 +33,15 @@
         
       },
       checkForm: function () {
-        // if(this.query.act === ''){
-        //   alert('活动是必选项，不能为空！')
-        //   return 
-        // } else if (!$('#fileUrl').val()){
-        //   alert('请选择一个名单文件！')
-        //   return
-        // } 
+        if(this.query.act === ''){
+          alert('活动是必选项，不能为空！')
+          return 
+        } else if (!$('#fileUrl').val()){
+          alert('请选择一个名单文件！')
+          return
+        } 
 
+        
         if(this.selectList.length === 0){
           this.policies = 'm0,h0,b0,b1,m1,b2,m2'
         } else {
