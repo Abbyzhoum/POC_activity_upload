@@ -4,13 +4,15 @@
     data: {
       query: {
         act: '',
-        time: ''
+        time: '',
+        nextAct: ''
       },
       time:'',
       activities: [],
-      checkValue: '',
+      title: '',
       policies: '',
-      selectList:[]
+      selectList:[],
+      selectedStatus: []
     },
     methods: {
       getActivities: function () {
@@ -24,7 +26,6 @@
         axios.post('http://192.168.40.134:31003/ocm/v1/activity/list/',payload)
           .then(function (res) {
             that.activities = res.data
-            console.log(res.data)
           })
           .catch(function (error) {
             console.log(error)
@@ -33,28 +34,27 @@
         
       },
       checkForm: function () {
-        if(this.query.act === ''){
+          if(this.query.act === ''){
           alert('活动是必选项，不能为空！')
           return 
         } else if (!$('#fileUrl').val()){
           alert('请选择一个名单文件！')
           return
-        } 
-
-        
-        if(this.selectList.length === 0){
-          this.policies = 'm0,h0,b0,b1,m1,b2,m2'
-        } else {
-          this.policies = this.checkValue
+        } else if(this.selectList.length === 0){
+          alert('请输入号码表头！')
+          return
+        } else if(this.policies === ''){
+          this.policies = this.selectList.join()
         }
 
-        console.log(this.policies)
+        this.title = this.selectList.join()
 
-        var url = 'http://192.168.2.53:8082/upload?activityId=' + this.query.act + '&policies=' + this.policies
+        var url = 'http://192.168.2.40:8082/rosters?activityId=' + this.query.act + '&title=' + this.title + '&policy=' + this.policies
+
         this.toggleLoading($('#main'))
 
         var formData = new FormData()
-        formData.append('upload', $('#fileUrl')[0].files[0])
+        formData.append('file', $('#fileUrl')[0].files[0])
 
         var xhr = new XMLHttpRequest()
         xhr.open('post', url)
@@ -62,7 +62,7 @@
 
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
-            if(xhr.status === 200){
+            if(xhr.status === 204){
               alert('上传名单成功！')
             } else {
               alert('上传名单失败！')
@@ -83,7 +83,7 @@
         })
       },
       clickDownload: function (e) {
-        if(this.query.act === ''){
+        if(this.query.nextAct === ''){
           alert('活动是必选项，不能为空！')
           return 
         } else if(this.query.time === ''){
@@ -93,7 +93,7 @@
 
         this.time = this.query.time.split('-').join('')
         this.toggleLoading($('#main'))
-        var path = 'http://192.168.2.53:8082/rosters/download?activityId='+ this.query.act + '&date=' + this.time
+        var path = 'http://192.168.2.53:8082/rosters/download?activityId='+ this.query.nextAct + '&date=' + this.time
 
         var that = this
         var $a = document.getElementById('a-link-for-download')
@@ -125,21 +125,22 @@
           $element.addClass('csspinner line back-and-forth grow')
         }
       },
-      getValue: function (e) {
-         var hobbies = e.target
-         var value
+      getValue: function () {
+        this.policies = this.selectedStatus.join()
+       },
+       writeTab: function (e) {
+         var patt = /^[0-9a-zA-Z,]*$/
+         if(!patt.test(e.target.value)){
+            alert('请输入正确格式的号码表头！')
+            return
+         } 
 
-        if(hobbies.checked){
-          this.selectList.push(hobbies.value)
-        }else{
-          var index = this.selectList.findIndex(function(item){
-            return item === hobbies.value
+         var data = e.target.value
+         this.selectList = data.split(',').filter((item) => {
+            return item !== ''
           })
-          this.selectList.splice(index,1)
-        }
-        this.checkValue =  this.selectList.join()
-        console.log(this.selectList)
 
+          this.selectedStatus = this.selectList
        }
     },
     created: function () {

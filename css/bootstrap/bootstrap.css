@@ -2536,8 +2536,10 @@ output {
   color: #616262;
 }
 .form-control {
-  display: block;
-  width: 100%;
+  /* display: block; */
+  /* width: 100%; */
+  display: inline;  /*修改的部分*/
+  width: 50%;  /*修改的部分*/
   height: 38px;
   padding: 8px 14px;
   font-size: 14px;
